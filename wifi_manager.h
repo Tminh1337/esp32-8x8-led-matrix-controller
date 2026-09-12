@@ -5,7 +5,7 @@
 #include <ESPmDNS.h>
 
 // Access Point credentials
-const char* ssid = "ESP32_LED_Matrix";
+const char* ssid = "ESP32_LED_Matrix"; // You can change the Wi-Fi name and password here
 const char* password = "password123";
 const char* mdns_hostname = "8x8ledmatrix"; // Accessible via http://8x8ledmatrix.local
 

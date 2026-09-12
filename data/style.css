@@ -1,0 +1,151 @@
+/* --- General Body Styling (Terminal Vibe) --- */
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    margin: 0;
+    padding: 20px 10px;
+    /* Limit touch action to vertical panning only (prevents accidental zooming) */
+    touch-action: pan-y; 
+}
+
+h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* --- Toolbar Styling --- */
+.toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align eraser button bottom with color picker bottom */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Container for the label and the color picker */
+.picker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Space between label and picker */
+}
+
+/* Small label above the color picker */
+.picker-label {
+    font-size: 0.8rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+/* --- Square Color Picker input (Cross-browser Custom Styling) --- */
+#colorPicker {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    border: 2px solid #ffffff; /* Viền trắng ngoài cùng */
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 0; /* Ép bỏ viền bo tròn mặc định của khung */
+    overflow: hidden; /* Cắt đi những chi tiết thừa (như bóng tròn) */
+}
+
+/* Inner swatch styling for WebKit (Chrome, Safari, Edge, iOS) */
+#colorPicker::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 0; /* Ép bỏ bo tròn của lớp bọc màu */
+}
+
+#colorPicker::-webkit-color-swatch {
+    border: 3px solid #000000; /* Viền đen ở giữa */
+    border-radius: 0 !important; /* Dùng !important để vô hiệu hóa hoàn toàn hình tròn của Apple */
+}
+
+/* Inner swatch styling for Firefox */
+#colorPicker::-moz-color-swatch {
+    border: 3px solid #000000; 
+    border-radius: 0 !important;
+}
+
+/* Default Eraser Button (Black bg, White text) */
+#eraserBtn {
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 10px 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* Active Eraser Button (White bg, Black text) */
+#eraserBtn.active {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* --- 8x8 Grid Container Styling --- */
+#matrixGrid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 columns */
+    width: 320px;  /* 40px per pixel * 8 */
+    height: 320px;
+    margin: 0 auto;
+    border: 2px solid #ffffff;
+    /* Prevent default touch actions (scrolling) when drawing on the grid */
+    touch-action: none; 
+}
+
+/* Individual LED Pixel Styling */
+.pixel {
+    background-color: #000000; /* Default pixel color is OFF/Black */
+    border: 1px solid #333333; /* Faint border to see individual pixels */
+    cursor: crosshair;
+}
+
+/* --- Action Buttons Styling --- */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* Clear Button (Black bg, Red text/border) */
+#clearBtn {
+    background-color: #000000;
+    color: #ff0000;
+    border: 2px solid #ff0000;
+    padding: 10px 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* Deploy Button (White bg, Black text) */
+#deployBtn {
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+    padding: 10px 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* The click animation (transform: scale) has been completely removed */

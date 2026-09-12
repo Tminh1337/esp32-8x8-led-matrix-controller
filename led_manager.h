@@ -51,4 +51,38 @@ void drawPixel(uint8_t x, uint8_t y, CRGB color) {
   leds[index] = color;
 }
 
+// Process the color string received from Web (e.g., "ff0000,000000,...")
+void updateMatrixFromWeb(String payload) {
+  int index = 0;
+  int startPos = 0;
+  int commaPos = payload.indexOf(',');
+  
+  // Scan through the payload and extract each hex color
+  while (commaPos != -1 && index < NUM_LEDS) {
+    String hexColor = payload.substring(startPos, commaPos);
+    uint32_t colorValue = strtol(hexColor.c_str(), NULL, 16); // Convert Hex to INT
+    
+    // Convert web index (0-63 left-to-right) to X, Y coordinates
+    uint8_t x = index % MATRIX_WIDTH;
+    uint8_t y = index / MATRIX_WIDTH;
+    drawPixel(x, y, colorValue);
+    
+    startPos = commaPos + 1;
+    commaPos = payload.indexOf(',', startPos);
+    index++;
+  }
+  
+  // Process the last pixel (64th pixel, no trailing comma)
+  if (index < NUM_LEDS) {
+    String hexColor = payload.substring(startPos);
+    uint32_t colorValue = strtol(hexColor.c_str(), NULL, 16);
+    uint8_t x = index % MATRIX_WIDTH;
+    uint8_t y = index / MATRIX_WIDTH;
+    drawPixel(x, y, colorValue);
+  }
+  
+  // Push changes to the physical matrix
+  FastLED.show();
+}
+
 #endif

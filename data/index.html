@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Prevent zooming on mobile devices to ensure smooth drawing -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ESP32 LED Matrix Controller</title>
+    <!-- Link to the external CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Header -->
+    <h1>ESP32 Matrix Control</h1>
+    
+    <!-- Toolbar: Color Picker & Eraser -->
+    <div class="toolbar">
+        <!-- Container for the label and color picker -->
+        <div class="picker-container">
+            <span class="picker-label">COLOR PICKER</span>
+            <input type="color" id="colorPicker" value="#ffffff">
+        </div>
+        
+        <!-- Eraser toggle button -->
+        <button id="eraserBtn">Eraser: OFF</button>
+    </div>
+
+    <!-- 8x8 LED Matrix Grid Container -->
+    <div id="matrixGrid"></div>
+
+    <!-- Action Buttons: Clear Grid & Deploy to ESP32 -->
+    <div class="action-buttons">
+        <button id="clearBtn">CLEAR</button>
+        <button id="deployBtn">DEPLOY</button>
+    </div>
+
+    <!-- Link to the external JavaScript logic -->
+    <script src="script.js"></script>
+</body>
+</html>
