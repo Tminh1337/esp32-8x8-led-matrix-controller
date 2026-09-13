@@ -85,4 +85,24 @@ void updateMatrixFromWeb(String payload) {
   FastLED.show();
 }
 
+// ---Update Brightness Function ---
+// Receives brightness value (0-255) from the web interface
+void updateBrightnessFromWeb(String payload) {
+  int newBrightness = payload.toInt(); // Convert string to integer
+  
+  // Safety check: Hard limit to 120 to prevent power overload.
+  // Developers can change this limit here if using an external power supply.
+  if (newBrightness > 120) {
+    newBrightness = 120;
+  } else if (newBrightness < 0) {
+    newBrightness = 0;
+  }
+  
+  FastLED.setBrightness(newBrightness);
+  FastLED.show(); // Push the brightness change to the LEDs immediately
+  
+  Serial.print("Brightness updated to: ");
+  Serial.println(newBrightness);
+}
+
 #endif

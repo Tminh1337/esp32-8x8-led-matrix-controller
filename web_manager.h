@@ -64,6 +64,17 @@ void setupWebServer() {
     }
   });
 
+  // --- Define the API route for Brightness control ---
+  server.on("/brightness", HTTP_POST, []() {
+    if (server.hasArg("plain")) {
+      String payload = server.arg("plain"); // This will be a string like "50" or "100"
+      updateBrightnessFromWeb(payload); 
+      server.send(200, "text/plain", "Brightness updated");
+    } else {
+      server.send(400, "text/plain", "Bad Request: Empty Brightness Payload");
+    }
+  });
+
   // 4. Start the server
   server.begin();
   Serial.println("HTTP Web Server started.");

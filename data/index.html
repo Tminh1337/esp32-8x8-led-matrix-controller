@@ -24,6 +24,21 @@
         <button id="eraserBtn">Eraser: OFF</button>
     </div>
 
+    <!--Preset Colors -->
+    <div class="preset-container">
+        <span class="picker-label">PRESET COLORS</span>
+        <div id="colorPresets" class="preset-grid">
+            <!-- JavaScript will inject preset colors here -->
+        </div>
+    </div>
+
+    <!--Brightness Slider -->
+    <div class="brightness-container">
+        <span class="picker-label">BRIGHTNESS: <span id="brightVal">50</span></span>
+        <!-- Changed max from 255 to 120 for safety -->
+        <input type="range" id="brightnessSlider" min="0" max="120" value="50">
+    </div>
+
     <!-- 8x8 LED Matrix Grid Container -->
     <div id="matrixGrid"></div>
 

@@ -117,3 +117,47 @@ deployBtn.addEventListener('click', () => {
         deployBtn.textContent = 'ERROR';
     });
 });
+
+
+// ==========================================
+// --- NEW: Preset Colors & Brightness ---
+// ==========================================
+
+const colorPresets = document.getElementById('colorPresets');
+const brightnessSlider = document.getElementById('brightnessSlider');
+const brightVal = document.getElementById('brightVal');
+
+// Mảng chứa các màu Preset cơ bản
+const commonColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff', '#ffffff']; 
+
+// --- Initialize Preset Colors ---
+function initPresetColors() {
+    colorPresets.innerHTML = ''; 
+    commonColors.forEach(color => {
+        const swatch = document.createElement('div');
+        swatch.classList.add('preset-swatch');
+        swatch.style.backgroundColor = color;
+        
+        // Khi click vào màu có sẵn, cập nhật màu đó lên ô Color Picker chính
+        swatch.addEventListener('click', () => {
+            colorPicker.value = color;
+        });
+        
+        colorPresets.appendChild(swatch);
+    });
+}
+initPresetColors();
+
+// --- Brightness Slider UI Update ---
+brightnessSlider.addEventListener('input', (e) => {
+    brightVal.textContent = e.target.value;
+});
+
+// --- Brightness Deploy Logic (Send to ESP32) ---
+brightnessSlider.addEventListener('change', (e) => {
+    fetch('/brightness', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: e.target.value
+    }).catch(err => console.error('Brightness Error:', err));
+});
