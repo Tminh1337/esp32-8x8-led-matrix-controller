@@ -18,8 +18,15 @@ CRGB leds[NUM_LEDS];
 void setupLEDs() {
   Serial.println("Initializing LED Matrix...");
   
-  // Setup FastLED library
-  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  // Apply LED correction for SMD5050 matrices
+  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalSMD5050);
+  
+  // Custom Color Temperature: Lower Red channel to 210 to aggressively eliminate pinkish tint
+  FastLED.setTemperature(CRGB(210, 255, 255));
+  
+  // Disable temporal dithering to prevent red ghosting at low brightness levels
+  FastLED.setDither(0); 
+  
   FastLED.setBrightness(BRIGHTNESS);
   
   // Clear all LEDs on startup
@@ -33,14 +40,11 @@ void setupLEDs() {
 // Origin (0,0) is Top-Left. 
 // Physical routing: Zig-zag starting from Top-Right.
 uint16_t getLedIndex(uint8_t x, uint8_t y) {
-  // Prevent out of bounds errors
   if (x >= MATRIX_WIDTH || y >= MATRIX_HEIGHT) return 0; 
   
   if (y % 2 == 0) {
-    // Even rows (0, 2, 4, 6): physically routed Right to Left
     return (y * MATRIX_WIDTH) + (MATRIX_WIDTH - 1 - x);
   } else {
-    // Odd rows (1, 3, 5, 7): physically routed Left to Right
     return (y * MATRIX_WIDTH) + x;
   }
 }
@@ -57,12 +61,10 @@ void updateMatrixFromWeb(String payload) {
   int startPos = 0;
   int commaPos = payload.indexOf(',');
   
-  // Scan through the payload and extract each hex color
   while (commaPos != -1 && index < NUM_LEDS) {
     String hexColor = payload.substring(startPos, commaPos);
-    uint32_t colorValue = strtol(hexColor.c_str(), NULL, 16); // Convert Hex to INT
+    uint32_t colorValue = strtol(hexColor.c_str(), NULL, 16);
     
-    // Convert web index (0-63 left-to-right) to X, Y coordinates
     uint8_t x = index % MATRIX_WIDTH;
     uint8_t y = index / MATRIX_WIDTH;
     drawPixel(x, y, colorValue);
@@ -72,7 +74,6 @@ void updateMatrixFromWeb(String payload) {
     index++;
   }
   
-  // Process the last pixel (64th pixel, no trailing comma)
   if (index < NUM_LEDS) {
     String hexColor = payload.substring(startPos);
     uint32_t colorValue = strtol(hexColor.c_str(), NULL, 16);
@@ -81,25 +82,23 @@ void updateMatrixFromWeb(String payload) {
     drawPixel(x, y, colorValue);
   }
   
-  // Push changes to the physical matrix
   FastLED.show();
 }
 
-// ---Update Brightness Function ---
-// Receives brightness value (0-255) from the web interface
+// --- Update Brightness Function ---
+// Receives brightness value (5-255) from the web interface
 void updateBrightnessFromWeb(String payload) {
-  int newBrightness = payload.toInt(); // Convert string to integer
+  int newBrightness = payload.toInt();
   
-  // Safety check: Hard limit to 120 to prevent power overload.
-  // Developers can change this limit here if using an external power supply.
-  if (newBrightness > 120) {
-    newBrightness = 120;
-  } else if (newBrightness < 0) {
-    newBrightness = 0;
+  // Minimum limit enforced at 5 to prevent low-voltage red ghosting
+  if (newBrightness > 255) {
+    newBrightness = 255;
+  } else if (newBrightness < 5) {
+    newBrightness = 5;
   }
   
   FastLED.setBrightness(newBrightness);
-  FastLED.show(); // Push the brightness change to the LEDs immediately
+  FastLED.show();
   
   Serial.print("Brightness updated to: ");
   Serial.println(newBrightness);

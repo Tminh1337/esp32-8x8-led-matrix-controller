@@ -52,22 +52,22 @@ h1 {
     width: 45px;
     height: 45px;
     padding: 0;
-    border: 2px solid #ffffff; /* Viền trắng ngoài cùng */
+    border: 2px solid #ffffff; /* Outer white border */
     background-color: transparent;
     cursor: pointer;
-    border-radius: 0; /* Ép bỏ viền bo tròn mặc định của khung */
-    overflow: hidden; /* Cắt đi những chi tiết thừa (như bóng tròn) */
+    border-radius: 0; /* Force remove default rounded borders */
+    overflow: hidden; /* Clip out excess details (like rounded shadows) */
 }
 
 /* Inner swatch styling for WebKit (Chrome, Safari, Edge, iOS) */
 #colorPicker::-webkit-color-swatch-wrapper {
     padding: 0;
-    border-radius: 0; /* Ép bỏ bo tròn của lớp bọc màu */
+    border-radius: 0; /* Force remove rounded borders of color swatch wrapper */
 }
 
 #colorPicker::-webkit-color-swatch {
-    border: 3px solid #000000; /* Viền đen ở giữa */
-    border-radius: 0 !important; /* Dùng !important để vô hiệu hóa hoàn toàn hình tròn của Apple */
+    border: 3px solid #000000; /* Inner black border */
+    border-radius: 0 !important; /* Use !important to completely disable Apple's circular styling */
 }
 
 /* Inner swatch styling for Firefox */
@@ -148,8 +148,6 @@ h1 {
     text-transform: uppercase;
 }
 
-/* The click animation (transform: scale) has been completely removed */
-
 /* --- Preset Colors Styling --- */
 .preset-container {
     margin-bottom: 20px;
@@ -179,17 +177,25 @@ h1 {
     align-items: center;
     gap: 8px;
 }
-/* Override default slider */
+
+.slider-wrapper {
+    position: relative;
+    width: 250px;
+    display: flex;
+    align-items: center;
+}
+
 #brightnessSlider {
     -webkit-appearance: none;
     appearance: none;
-    width: 250px;
+    width: 100%;
     height: 8px;
     background: #000000;
     border: 1px solid #ffffff;
     outline: none;
+    z-index: 1;
 }
-/* Custom Slider Thumb */
+
 #brightnessSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -197,7 +203,9 @@ h1 {
     height: 20px;
     background: #ffffff;
     cursor: pointer;
+    z-index: 3;
 }
+
 #brightnessSlider::-moz-range-thumb {
     width: 20px;
     height: 20px;
@@ -205,4 +213,97 @@ h1 {
     cursor: pointer;
     border: none;
     border-radius: 0;
+    z-index: 3;
+}
+
+/* Red limit marker at position 120 (~47% of 255) */
+.limit-mark {
+    position: absolute;
+    left: 47%;
+    top: -4px;
+    bottom: -4px;
+    width: 3px;
+    background-color: #ff0000;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ==========================================
+   --- Tab Navigation Styling --- 
+   ========================================== */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Add small gap between tabs for block button style */
+    margin-bottom: 25px;
+    /* Removed extended horizontal border-bottom line */
+}
+
+.tab-btn {
+    background-color: #000000;
+    color: #aaaaaa;
+    border: 2px solid #ffffff;
+    padding: 10px 25px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* Active Tab (White background, Black text) */
+.tab-btn.active {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* --- Tab Content Logic --- */
+.tab-content {
+    display: none; /* Hide tabs by default */
+    /* Completely removed fadeIn effect */
+}
+
+/* Instantly display active tab */
+.tab-content.active {
+    display: block; 
+}
+
+/* ==========================================
+   --- Danger Zone & Settings Styling --- 
+   ========================================== */
+.danger-zone {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px dashed #555555;
+    padding-top: 20px;
+}
+
+#unlockBtn {
+    background-color: #000000;
+    color: #ff0000;
+    border: 2px solid #ff0000;
+    padding: 10px 15px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* Button when unlocked */
+#unlockBtn.unlocked {
+    color: #00ff00;
+    border-color: #00ff00;
+    cursor: not-allowed;
+}
+
+.warning-text {
+    color: #ff5555;
+    font-size: 0.75rem;
+    max-width: 280px;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
 }
